@@ -28,4 +28,9 @@ inserir_empresa = lambda conexao, nome, país: executar_consulta(conexao, "INSER
 excluir_empresa = lambda conexao, id_empresa: executar_consulta(conexao, "DELETE FROM COMPANY WHERE id_company = %s", (id_empresa,))
 selecionar_todas_empresas = lambda conexao: (lambda cursor: (cursor.execute("SELECT * FROM COMPANY"), print("Consulta de todas as empresas:"), [print(linha) for linha in cursor.fetchall()]))(conexao.cursor())
 
+#ex:
+# inserir_usuario(conn, "Lucas", "Brasil", 2)
+# excluir_usuario(conn, 1) # as excluxções dependem do id
+# selecionar_todos_usuarios(conn)
+
 conn.close()
