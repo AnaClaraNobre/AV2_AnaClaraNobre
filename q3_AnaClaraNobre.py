@@ -1,21 +1,13 @@
 import psycopg2
 from psycopg2 import Error
 
-def conectar():
-    try:
-        conexao = psycopg2.connect(
-            user="postgres",
-            password="admin",
-            host="localhost",
-            port="5432",
-            database="AV2"
-        )
-        print("Conexão bem-sucedida.")
-        return conexao
-    except (Exception, Error) as erro:
-        print("Erro ao conectar ao banco de dados PostgreSQL:", erro)
-        return None
-
+conectar = lambda: psycopg2.connect(
+    user="postgres",
+    password="admin",
+    host="localhost",
+    port="5432",
+    database="AV2_Funcional"
+)
 conn = conectar()
 
 executar_consulta = lambda conexao, consulta, parametros=None: (lambda cursor: (cursor.execute(consulta, parametros), conexao.commit(), print("Operação bem-sucedida.")))(conn.cursor())
@@ -35,6 +27,5 @@ selecionar_todos_jogos = lambda conexao: (lambda cursor: (cursor.execute("SELECT
 inserir_empresa = lambda conexao, nome, país: executar_consulta(conexao, "INSERT INTO COMPANY (name, country) VALUES (%s, %s)", (nome, país))
 excluir_empresa = lambda conexao, id_empresa: executar_consulta(conexao, "DELETE FROM COMPANY WHERE id_company = %s", (id_empresa,))
 selecionar_todas_empresas = lambda conexao: (lambda cursor: (cursor.execute("SELECT * FROM COMPANY"), print("Consulta de todas as empresas:"), [print(linha) for linha in cursor.fetchall()]))(conexao.cursor())
-
 
 conn.close()
